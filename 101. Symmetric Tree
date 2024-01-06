@@ -1,0 +1,21 @@
+class Solution {
+    public boolean isSameTree(TreeNode p1, TreeNode p2){
+        if(p1 == null && p2 == null) return true;
+        if(p1 == null || p2 == null) return false;
+        if(p1.val != p2.val) return false;
+        return isSameTree(p1.left,p2.left) && isSameTree(p1.right, p2.right);
+    }
+    public boolean isSymmetric(TreeNode root) {
+        if(root == null) return true;
+        root.left = invertLTree(root.left);
+        return isSameTree(root.left , root.right);
+    }
+    public TreeNode invertLTree(TreeNode root){
+        if(root == null) return root;
+        TreeNode l = root.left;
+        TreeNode r = root.right;
+        root.left = invertLTree(r);
+        root.right = invertLTree(l);
+        return root;
+    }
+}
