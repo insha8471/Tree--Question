@@ -1,0 +1,35 @@
+//Aproach Level Order Traversal
+//T.c : O(N)
+//T.c : O(N) //if the tree is skewd tree then it tree every node.. //avg space complexity is O(level)
+
+class Solution {
+    public int height(TreeNode root){
+        if(root == null) return 0;
+        if(root.left==null && root.right==null) return 0;
+        int a = height(root.left);
+        int b = height(root.right);
+        return 1+Math.max(a, b);        
+    }
+    public void solve(TreeNode root, int level, List<Integer> ls){
+        if(root == null) return;
+        if(level == 1){ 
+            ls.add(root.val);
+            return;
+        }
+        solve(root.left, level-1, ls);
+        solve(root.right, level-1, ls);
+    }
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if(root == null) return res;
+        int level = height(root) + 1;
+        for(int i=1;i<=level;i++){
+            List<Integer> temp = new ArrayList<>();
+            solve(root, i, temp);
+            if(temp.size() != 0){
+                res.add(temp);
+            }
+        }
+        return res;
+    }
+}
