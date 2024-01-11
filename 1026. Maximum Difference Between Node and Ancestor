@@ -1,0 +1,53 @@
+//Approach 1 : Brute force 
+//T.c : O(N*N)
+//S.c : O(N)
+
+class Solution {
+    public void findMaxUtil(TreeNode root, TreeNode child, int[] mx){
+        if(root == null || child == null) return;
+        mx[0] = Math.max(mx[0], Math.abs(root.val-child.val));
+
+        findMaxUtil(root, child.left, mx);
+        findMaxUtil(root, child.right, mx);
+    }
+    public void findMaxD(TreeNode root, int[] mx){
+        if(root == null) return;
+
+        findMaxUtil(root, root.left, mx);
+        findMaxUtil(root, root.right, mx);
+
+        findMaxD(root.left, mx);
+        findMaxD(root.right, mx);
+    }
+    public int maxAncestorDiff(TreeNode root) {
+        int[] mxD = new int[1];
+        mxD[0] = -1;
+        findMaxD(root, mxD);
+        return mxD[0];
+    }
+}
+
+************************************************************************************************************************************************
+
+//Approach 2: Optimal - checking maxValue and minValue at each node and return the maxDiff
+//T.c : O(N)
+//S.c : O(N)
+
+class Solution {
+    public int helper(TreeNode root, int maxV, int minV){
+        if(root == null){
+            return Math.abs(maxV - minV);
+        }
+
+        minV = Math.min(minV, root.val);
+        maxV = Math.max(maxV, root.val);
+
+        int lf = helper(root.left, maxV, minV);
+        int rt = helper(root.right, maxV, minV);
+
+        return Math.max(lf, rt);
+    }
+    public int maxAncestorDiff(TreeNode root) {
+        return helper(root, root.val, root.val);
+    }
+}
