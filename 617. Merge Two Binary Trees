@@ -4,20 +4,21 @@
 //S.c : O(h) 
 
 class Solution {
-    public TreeNode helper(int[] nums, int st, int end){
-        if(st > end){
-            return null; 
+    public TreeNode helper(TreeNode root1, TreeNode root2){
+        if(root1 == null && root2 == null){
+            return null;
+        }else if(root1 == null){
+            return root2;
+        }else if(root2 == null){
+            return root1;
         }
-        int mid = (st + end)/2;
-        TreeNode root = new TreeNode(nums[mid]);
-        root.left = helper(nums,st,mid-1);
-        root.right = helper(nums,mid+1,end);
+
+        TreeNode root = new TreeNode(root1.val + root2.val);
+        root.left = helper(root1.left, root2.left);
+        root.right = helper(root1.right, root2.right);
         return root;
-
     }
-    public TreeNode sortedArrayToBST(int[] nums) {
-        int n = nums.length;
-        return helper(nums, 0, n-1);
-
+    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+        return helper(root1, root2);
     }
 }
