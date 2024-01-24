@@ -1,0 +1,58 @@
+//Approach 1 : Brute using freq array of size 9 as the given the node value is in range of 1 to 9
+// preorder traversal - increase the freq if the leaf node come then check the freq by traversing (if the odd freq is 1 or 0 means pseudo palindrome is possibel)
+//T.c : O(N)
+//s.c : O(h)
+
+class Solution {
+    public int result = 0;
+    public void solve(TreeNode root, int[] freq){
+        if(root == null) return;
+        freq[root.val]++;
+        if(root.left == null && root.right==null){
+            int oddFreq = 0;
+            for(int i=1;i<=9;i++){
+                if(freq[i] % 2 != 0)
+                    oddFreq++;
+            }
+
+            if(oddFreq <= 1){
+                result ++;
+            }
+        }
+
+        solve(root.left, freq);
+        solve(root.right, freq);
+        freq[root.val]--;
+    }
+    public int pseudoPalindromicPaths (TreeNode root) {
+        int[] freq = new int[10];
+        solve(root, freq);
+        return result;
+    }
+}
+
+Approach 2 : Optimal using Big magic
+By set the bits according to the root value and doing the xor operation {(val ^ (1 << root.val))}
+if leaf node come then check if bit we set is power of 2 then it is pseudo palindrome    {(val & (val-1)) == 0}
+
+class Solution {
+    public int result = 0;
+    public void solve(TreeNode root, int val){
+        if(root == null) return;
+
+        val = val ^ (1 << root.val);
+
+        if(root.left==null && root.right==null){
+            if((val & (val-1)) == 0){
+                result++;
+            }
+        }
+
+        solve(root.left, val);
+        solve(root.right, val);
+    }
+    public int pseudoPalindromicPaths (TreeNode root) {
+        solve(root, 0);
+        return result;
+    }
+}
