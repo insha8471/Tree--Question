@@ -1,3 +1,4 @@
+.....................................
 class Solution {
     public boolean isSameTree(TreeNode p1, TreeNode p2){
         if(p1 == null && p2 == null) return true;
